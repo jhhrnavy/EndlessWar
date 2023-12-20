@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,10 +11,21 @@ public class PlayerController : MonoBehaviour
     private Vector3 _moveInput;
 
     [SerializeField]
-    private float _moveSpeed;
+    private float _moveSpeed = 5f;
 
     [SerializeField]
-    private float _rotateSpeed;
+    private float _rotateSpeed = 5f;
+
+    private Vector3 _rotDir;
+    // fire
+    [SerializeField]
+    private GameObject _bulletPref;
+
+    [SerializeField]
+    private Transform _firePos;
+
+    [SerializeField]
+    private float _bulletSpeed;
 
     private void Start()
     {
@@ -23,10 +33,16 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
     }
 
+    private void Update()
+    {
+        _rotDir = GetLookDirection();
+    }
+
     private void FixedUpdate()
     {
         _rb.velocity = _moveInput * _moveSpeed;
-        Debug.Log(_rb.velocity);
+
+        transform.rotation = Quaternion.LookRotation(_rotDir);
     }
 
     private void OnMove(InputValue inputValue)
@@ -37,6 +53,29 @@ public class PlayerController : MonoBehaviour
 
     private void OnFire()
     {
+        FireBullet();
+    }
 
+    private Vector3 GetLookDirection()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            Vector3 mousePosition = hit.point;
+            Vector3 dir = mousePosition - transform.position;
+            dir.y = 0;
+            dir.Normalize();
+            return dir;
+        }
+
+        return Vector3.zero;
+    }
+
+    public void FireBullet()
+    {
+        var bullet = Instantiate(_bulletPref, _firePos.position, Quaternion.identity);
+        bullet.GetComponent<Rigidbody>().AddForce(transform.forward * _bulletSpeed,ForceMode.Impulse);
     }
 }
