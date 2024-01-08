@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -54,18 +55,29 @@ public class PlayerController : MonoBehaviour
 
     private void OnFire()
     {
-        _currentGun.Shoot();
+        _currentGun.Shoot(GetMouseHitPosition());
+    }
+
+    private Vector3 GetMouseHitPosition()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        Vector3 mousePosition = Vector3.zero;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            mousePosition = hit.point;
+        }
+
+        return mousePosition;
     }
 
     private Vector3 GetLookDirection()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
+        Vector3 mousePoint = GetMouseHitPosition();
+        if (mousePoint != Vector3.zero)
         {
-            Vector3 mousePosition = hit.point;
-            Vector3 dir = mousePosition - transform.position;
+            Vector3 dir = mousePoint - transform.position;
             dir.y = 0;
             dir.Normalize();
             return dir;
@@ -74,5 +86,8 @@ public class PlayerController : MonoBehaviour
         return Vector3.zero;
     }
 
-
+    private void OnDrawGizmos()
+    {
+        Debug.DrawRay(transform.position, GetLookDirection());
+    }
 }
