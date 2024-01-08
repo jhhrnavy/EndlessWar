@@ -5,8 +5,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerInputActions _actions;
+    //private PlayerInputActions _actions;
     private Rigidbody _rb;
+    private  Animator _anim;
 
     private Vector3 _moveInput;
 
@@ -17,20 +18,19 @@ public class PlayerController : MonoBehaviour
     private float _rotateSpeed = 5f;
 
     private Vector3 _rotDir;
-    // fire
-    [SerializeField]
-    private GameObject _bulletPref;
 
     [SerializeField]
-    private Transform _firePos;
+    private List<GameObject> _weapons;
 
     [SerializeField]
-    private float _bulletSpeed;
+    private GunSystem _currentGun;
 
     private void Start()
     {
-        _actions = new PlayerInputActions();
+        //_actions = new PlayerInputActions();
         _rb = GetComponent<Rigidbody>();
+        _anim = GetComponent<Animator>();
+        _currentGun = _weapons[0].GetComponent<GunSystem>();
     }
 
     private void Update()
@@ -49,11 +49,12 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 input = inputValue.Get<Vector2>();
         _moveInput = new Vector3(input.x, 0, input.y);
+        _anim.SetFloat("Walk Forward", input.magnitude);
     }
 
     private void OnFire()
     {
-        FireBullet();
+        _currentGun.Shoot();
     }
 
     private Vector3 GetLookDirection()
@@ -73,9 +74,5 @@ public class PlayerController : MonoBehaviour
         return Vector3.zero;
     }
 
-    public void FireBullet()
-    {
-        var bullet = Instantiate(_bulletPref, _firePos.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().AddForce(transform.forward * _bulletSpeed,ForceMode.Impulse);
-    }
+
 }
