@@ -2,16 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
-    private void Start()
-    {
-        Destroy(gameObject, 2f);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Bullet"))
         {
             Destroy(gameObject);
         }
