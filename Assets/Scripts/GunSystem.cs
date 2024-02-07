@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class GunSystem : MonoBehaviour
 {
+    private PlayerInputActions _controls;
+
     public int damage;
     public int leftBullet;
-    public float timeBetweenShooting, spread;
-    public bool canShoot = false;
+    public int magazineSize;
+    public float fireRate, spread;
+    public float reloadTime = 0.5f;
+    private bool _readyToFire, _isFiring, _reloading;
 
 
     [SerializeField]
@@ -17,29 +21,113 @@ public class GunSystem : MonoBehaviour
     [SerializeField]
     private float _bulletSpeed;
 
-    public void Shoot(Vector3 mousePoint)
+    private void Awake()
     {
-        if (!canShoot)
-            return;
+        _readyToFire = true;
+        _controls = new PlayerInputActions();
 
-        // Spread
-        float x = Random.Range(-spread, spread);
+        _controls.GamePlay.Fire.started += context => StartFiring();
+        _controls.GamePlay.Fire.canceled += context => EndFiring();
 
-        // Calculate Direction with spread
-        Vector3 dir = (mousePoint - _firePos.position).normalized + new Vector3(x, 0, 0);
-        dir.y = 0;
-
-        var bullet = Instantiate(_bulletPref, _firePos.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().AddForce(dir * _bulletSpeed, ForceMode.Impulse);
-
-        canShoot = false;
-        leftBullet--;
-        Invoke("ResetShot", timeBetweenShooting);
+        _controls.GamePlay.Reload.performed += context => Reload();
     }
 
-    public void ResetShot()
+    private void Update()
     {
-        canShoot = true;
+        if(_readyToFire && _isFiring && !_reloading && leftBullet > 0)
+            PerformFiring();
+    }
+
+    private void OnEnable()
+    {
+        _controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _controls.Disable();
+    }
+
+
+    //public void Fire(Vector3 mousePoint)
+    //{
+    //    if (!_readyToFire)
+    //        return;
+
+    //    // Spread
+    //    float x = Random.Range(-spread, spread);
+
+    //    // Calculate Direction with spread
+    //    Vector3 dir = (mousePoint - _firePos.position).normalized + new Vector3(x, 0, 0);
+    //    dir.y = 0;
+
+    //    var bullet = Instantiate(_bulletPref, _firePos.position, Quaternion.identity);
+    //    bullet.GetComponent<Rigidbody>().AddForce(dir * _bulletSpeed, ForceMode.Impulse);
+
+    //    _readyToFire = false;
+    //    leftBullet--;
+    //    Invoke("ResetShot", fireRate);
+    //}
+
+
+    private void StartFiring()
+    {
+        _isFiring = true;
+    }
+
+    private void PerformFiring()
+    {
+        _readyToFire = false;
+
+        Vector3 direction = GetMouseHitPosition();
+
+        direction.y = 0;
+
+        var bullet = Instantiate(_bulletPref, _firePos.position, Quaternion.identity);
+        bullet.GetComponent<Rigidbody>().AddForce(direction.normalized * _bulletSpeed, ForceMode.Impulse);
+
+        leftBullet--;
+
+        if(leftBullet >= 0)
+        {
+            Invoke("ResetFiring", fireRate);
+        }
+    }
+    public void EndFiring()
+    {
+        _isFiring = false;
+    } 
+
+    public void ResetFiring()
+    {
+        _readyToFire = true;
+    }
+
+    private void Reload()
+    {
+        _reloading = true;
+        Invoke("ReloadFinish", reloadTime);
+    }
+
+    private void ReloadFinish()
+    {
+        leftBullet = magazineSize;
+        _reloading = false;
+    }
+
+
+    private Vector3 GetMouseHitPosition()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        Vector3 mousePosition = Vector3.zero;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            mousePosition = hit.point;
+        }
+
+        return mousePosition;
     }
 
 }

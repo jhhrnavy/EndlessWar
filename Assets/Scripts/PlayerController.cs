@@ -46,17 +46,18 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(_rotDir);
     }
 
-    private void OnMove(InputValue inputValue)
+    public void OnMove(InputAction.CallbackContext value)
     {
-        Vector2 input = inputValue.Get<Vector2>();
+        Vector2 input = value.ReadValue<Vector2>();
         _moveInput = new Vector3(input.x, 0, input.y);
         _anim.SetFloat("Walk Forward", input.magnitude);
     }
 
-    private void OnFire()
-    {
-        _currentGun.Shoot(GetMouseHitPosition());
-    }
+    //public void OnFire(InputAction.CallbackContext value)
+    //{
+    //    if(value.performed)
+    //        _currentGun.Fire(GetMouseHitPosition());
+    //}
 
     private Vector3 GetMouseHitPosition()
     {

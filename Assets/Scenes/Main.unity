@@ -652,9 +652,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   leftBullet: 10
-  timeBetweenShooting: 1
+  magazineSize: 10
+  fireRate: 0.1
   spread: 0.02
-  canShoot: 1
+  reloadTime: 1
   _bulletPref: {fileID: 5790209766866588704, guid: 18640462562fe4c45986433752bfdd5c, type: 3}
   _firePos: {fileID: 68319058}
   _bulletSpeed: 20
@@ -2677,7 +2678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: d304af0d09f0cb9438c0ecfb63d44bfb, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -2688,7 +2689,31 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5866666021200820236}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e6766b9b-33c6-4cba-897e-d8d39df460de
+    m_ActionName: GamePlay/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 52eb0285-97ff-4790-8aa7-f585ac8096c1
+    m_ActionName: GamePlay/Fire[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a0a59cb3-9950-4f5e-9f2c-fa4730c0f0c8
+    m_ActionName: GamePlay/Reload[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: GamePlay
