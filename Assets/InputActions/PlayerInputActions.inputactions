@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Weapon Switch",
+                    "type": "Value",
+                    "id": "bc91054d-65c2-4562-9bca-b4bfee52fb8e",
+                    "expectedControlType": "Integer",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -108,6 +117,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2ce0caca-fe42-49e7-98ce-492b138eff60",
+                    "path": "<Keyboard>/1",
+                    "interactions": "Press",
+                    "processors": "Scale",
+                    "groups": "",
+                    "action": "Weapon Switch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7b327d93-be95-4fb0-8674-3e6edf17f237",
+                    "path": "<Keyboard>/2",
+                    "interactions": "Press",
+                    "processors": "Scale(factor=2)",
+                    "groups": "",
+                    "action": "Weapon Switch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d4dbc34-96ab-43d5-88e6-a1d91842b8d6",
+                    "path": "<Keyboard>/3",
+                    "interactions": "Press",
+                    "processors": "Scale(factor=3)",
+                    "groups": "",
+                    "action": "Weapon Switch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c95ef658-afec-4aea-9ee2-e2f3df152601",
+                    "path": "<Keyboard>/4",
+                    "interactions": "Press",
+                    "processors": "Scale(factor=4)",
+                    "groups": "",
+                    "action": "Weapon Switch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

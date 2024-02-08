@@ -53,6 +53,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Weapon Switch"",
+                    ""type"": ""Value"",
+                    ""id"": ""bc91054d-65c2-4562-9bca-b4bfee52fb8e"",
+                    ""expectedControlType"": ""Integer"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ce0caca-fe42-49e7-98ce-492b138eff60"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": ""Press"",
+                    ""processors"": ""Scale"",
+                    ""groups"": """",
+                    ""action"": ""Weapon Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7b327d93-be95-4fb0-8674-3e6edf17f237"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": ""Press"",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": """",
+                    ""action"": ""Weapon Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d4dbc34-96ab-43d5-88e6-a1d91842b8d6"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": ""Press"",
+                    ""processors"": ""Scale(factor=3)"",
+                    ""groups"": """",
+                    ""action"": ""Weapon Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c95ef658-afec-4aea-9ee2-e2f3df152601"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": ""Press"",
+                    ""processors"": ""Scale(factor=4)"",
+                    ""groups"": """",
+                    ""action"": ""Weapon Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -143,6 +196,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_GamePlay_Move = m_GamePlay.FindAction("Move", throwIfNotFound: true);
         m_GamePlay_Fire = m_GamePlay.FindAction("Fire", throwIfNotFound: true);
         m_GamePlay_Reload = m_GamePlay.FindAction("Reload", throwIfNotFound: true);
+        m_GamePlay_WeaponSwitch = m_GamePlay.FindAction("Weapon Switch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,6 +261,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_GamePlay_Move;
     private readonly InputAction m_GamePlay_Fire;
     private readonly InputAction m_GamePlay_Reload;
+    private readonly InputAction m_GamePlay_WeaponSwitch;
     public struct GamePlayActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -214,6 +269,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_GamePlay_Move;
         public InputAction @Fire => m_Wrapper.m_GamePlay_Fire;
         public InputAction @Reload => m_Wrapper.m_GamePlay_Reload;
+        public InputAction @WeaponSwitch => m_Wrapper.m_GamePlay_WeaponSwitch;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -232,6 +288,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @WeaponSwitch.started += instance.OnWeaponSwitch;
+            @WeaponSwitch.performed += instance.OnWeaponSwitch;
+            @WeaponSwitch.canceled += instance.OnWeaponSwitch;
         }
 
         private void UnregisterCallbacks(IGamePlayActions instance)
@@ -245,6 +304,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @WeaponSwitch.started -= instance.OnWeaponSwitch;
+            @WeaponSwitch.performed -= instance.OnWeaponSwitch;
+            @WeaponSwitch.canceled -= instance.OnWeaponSwitch;
         }
 
         public void RemoveCallbacks(IGamePlayActions instance)
@@ -267,5 +329,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnWeaponSwitch(InputAction.CallbackContext context);
     }
 }

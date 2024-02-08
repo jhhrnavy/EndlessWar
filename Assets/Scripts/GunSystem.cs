@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GunSystem : MonoBehaviour
@@ -79,7 +80,7 @@ public class GunSystem : MonoBehaviour
     {
         _readyToFire = false;
 
-        Vector3 direction = GetMouseHitPosition();
+        Vector3 direction = GetMouseHitPosition() - transform.position;
 
         direction.y = 0;
 
@@ -125,6 +126,7 @@ public class GunSystem : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             mousePosition = hit.point;
+            Debug.DrawRay(hit.point, hit.normal, Color.red, 3f);
         }
 
         return mousePosition;

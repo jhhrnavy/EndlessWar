@@ -353,7 +353,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &227147308
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,7 +689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: b812e42521a5a27499e76cc5ed56e3ac, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: b812e42521a5a27499e76cc5ed56e3ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -850,6 +850,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ad400e7a22a0df4b94f8f2d9ab1a8ca, type: 3}
+--- !u!1 &663652818 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100004, guid: b812e42521a5a27499e76cc5ed56e3ac, type: 3}
+  m_PrefabInstance: {fileID: 362091949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &763294974
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1117,9 +1122,9 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 26.1
   orthographic: 1
-  orthographic size: 5.36
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1579,8 +1584,8 @@ Transform:
   - {fileID: 1189529853700689395}
   - {fileID: 9118793900498674327}
   - {fileID: 8447082966439022949}
-  - {fileID: 1604777384}
   - {fileID: 227435018}
+  - {fileID: 1604777384}
   m_Father: {fileID: 2563496969257857075}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1862624587245455348
@@ -2714,6 +2719,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: a0a59cb3-9950-4f5e-9f2c-fa4730c0f0c8
     m_ActionName: GamePlay/Reload[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5866666021200820236}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnSwitchWeapons
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bc91054d-65c2-4562-9bca-b4bfee52fb8e
+    m_ActionName: GamePlay/Weapon Switch[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: GamePlay
@@ -2735,6 +2756,7 @@ MonoBehaviour:
   _rotateSpeed: 5
   _weapons:
   - {fileID: 227147306}
+  - {fileID: 663652818}
   _currentGun: {fileID: 0}
 --- !u!54 &5866666021200820237
 Rigidbody:

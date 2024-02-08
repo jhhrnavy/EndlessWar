@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    //private PlayerInputActions _actions;
+    private PlayerInputActions _controls;
+
     private Rigidbody _rb;
     private  Animator _anim;
 
@@ -20,18 +21,33 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 _rotDir;
 
-    [SerializeField]
-    private List<GameObject> _weapons;
+    public GameObject[] _weapons = new GameObject[4];
 
     [SerializeField]
     private GunSystem _currentGun;
+
+    private void Awake()
+    {
+        _controls = new PlayerInputActions();
+        _controls.GamePlay.WeaponSwitch.performed += context => SwitchWeapons((int)context.ReadValue<float>() - 1);
+    }
+
+    private void OnEnable()
+    {
+        _controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _controls.Disable();
+    }
 
     private void Start()
     {
         //_actions = new PlayerInputActions();
         _rb = GetComponent<Rigidbody>();
         _anim = GetComponent<Animator>();
-        _currentGun = _weapons[0].GetComponent<GunSystem>();
+        SwitchWeapons(0);
     }
 
     private void Update()
@@ -51,6 +67,16 @@ public class PlayerController : MonoBehaviour
         Vector2 input = value.ReadValue<Vector2>();
         _moveInput = new Vector3(input.x, 0, input.y);
         _anim.SetFloat("Walk Forward", input.magnitude);
+    }
+
+    public void OnSwitchWeapons(InputAction.CallbackContext value)
+    {
+        if (value.performed)
+        {
+            Debug.Log(value.ReadValue<float>());
+            int index = (int)value.ReadValue<float>() - 1;
+            SwitchWeapons(index);
+        }
     }
 
     //public void OnFire(InputAction.CallbackContext value)
@@ -90,5 +116,16 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Debug.DrawRay(transform.position, GetLookDirection());
+    }
+
+    public void SwitchWeapons(int index)
+    {
+        for (int i = 0; i < _weapons.Length; i++)
+        {
+            _weapons[i].SetActive(false);
+        }
+
+        if(index < _weapons.Length)
+            _weapons[index].SetActive(true);
     }
 }
