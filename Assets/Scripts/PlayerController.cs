@@ -26,6 +26,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GunSystem _currentGun;
 
+    public Transform _trsfGunPivot;
+
+    public Transform[] _trsfLHandMount;   //  총에 왼손이 위치할 지점
+    public Transform[] _trsfRHandMount;   //  총에 오른손이 위치할 지점
+
+
+    WeaponType _weaponType = WeaponType.Main;
+
+    enum WeaponType
+    {
+        Main, // 주 무기 : 라이플 등
+        Sub, // 보조 무기 : 권총
+        melee, // 근접 무기
+        Grenade, // 투척물
+    }
+
     private void Awake()
     {
         _controls = new PlayerInputActions();
@@ -120,6 +136,7 @@ public class PlayerController : MonoBehaviour
 
     public void SwitchWeapons(int index)
     {
+        _weaponType = (WeaponType)index;
         for (int i = 0; i < _weapons.Length; i++)
         {
             _weapons[i].SetActive(false);
@@ -127,5 +144,21 @@ public class PlayerController : MonoBehaviour
 
         if(index < _weapons.Length)
             _weapons[index].SetActive(true);
+    }
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+        _trsfGunPivot.position = _anim.GetIKHintPosition(AvatarIKHint.RightElbow);
+
+        _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+        _anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
+        _anim.SetIKPosition(AvatarIKGoal.LeftHand, _trsfLHandMount[(int)_weaponType].position);
+        _anim.SetIKRotation(AvatarIKGoal.LeftHand, _trsfLHandMount[(int)_weaponType].rotation);
+
+        _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+        _anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+        _anim.SetIKPosition(AvatarIKGoal.RightHand, _trsfRHandMount[(int)_weaponType].position);
+        _anim.SetIKRotation(AvatarIKGoal.RightHand, _trsfRHandMount[(int)_weaponType].rotation);
+
     }
 }
