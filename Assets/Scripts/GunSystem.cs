@@ -11,7 +11,7 @@ public class GunSystem : MonoBehaviour
     public float fireRate, spread;
     public float reloadTime = 0.5f;
     private bool _readyToFire, _isFiring, _reloading;
-
+    public bool _allowsAutoShot;
 
     [SerializeField]
     private GameObject _bulletPref;
@@ -35,7 +35,7 @@ public class GunSystem : MonoBehaviour
 
     private void Update()
     {
-        if(_readyToFire && _isFiring && !_reloading && leftBullet > 0)
+        if (_readyToFire && _isFiring && !_reloading && leftBullet > 0)
             PerformFiring();
     }
 
@@ -80,7 +80,11 @@ public class GunSystem : MonoBehaviour
     {
         _readyToFire = false;
 
-        Vector3 direction = GetMouseHitPosition() - transform.position;
+        // Spread
+        float x = Random.Range(-spread, spread);
+        float y = Random.Range(-spread, spread);
+
+        Vector3 direction = GetMouseHitPosition() - transform.position + new Vector3(x,y,0);
 
         direction.y = 0;
 
@@ -89,9 +93,15 @@ public class GunSystem : MonoBehaviour
 
         leftBullet--;
 
-        if(leftBullet >= 0)
+        if (leftBullet >= 0)
         {
             Invoke("ResetFiring", fireRate);
+        }
+
+        // 단발 사격
+        if (!_allowsAutoShot)
+        {
+            EndFiring();
         }
     }
     public void EndFiring()
@@ -101,6 +111,8 @@ public class GunSystem : MonoBehaviour
 
     public void ResetFiring()
     {
+        Debug.Log("call invoke");
+
         _readyToFire = true;
     }
 
@@ -131,5 +143,4 @@ public class GunSystem : MonoBehaviour
 
         return mousePosition;
     }
-
 }
