@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -74,15 +75,24 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         _rb.velocity = _moveInput * _moveSpeed;
-
-        transform.rotation = Quaternion.LookRotation(_rotDir);
+        if(_rotDir != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(_rotDir);
     }
 
     public void OnMove(InputAction.CallbackContext value)
     {
+        if (value.started) return;
+
         Vector2 input = value.ReadValue<Vector2>();
         _moveInput = new Vector3(input.x, 0, input.y);
-        _anim.SetFloat("Walk Forward", input.magnitude);
+
+        // 이동 방향이 앞인가 뒤인가
+        if(Vector3.Dot(_rotDir,_moveInput) >= 0)
+            _anim.SetFloat("Walk", input.magnitude);
+        else
+            _anim.SetFloat("Walk", -input.magnitude);
+
+        Debug.Log(input.magnitude);
     }
 
     public void OnSwitchWeapons(InputAction.CallbackContext value)
@@ -142,23 +152,46 @@ public class PlayerController : MonoBehaviour
             _weapons[i].SetActive(false);
         }
 
-        if(index < _weapons.Length)
+        if(index < 2)
+        {
             _weapons[index].SetActive(true);
+            _anim.SetLayerWeight(1, 0f);
+        }
+        else if(index == 2)
+        {
+            _weapons[index].SetActive(true);
+            _anim.SetLayerWeight(1, 1f);
+        }
     }
 
     private void OnAnimatorIK(int layerIndex)
     {
-        _trsfGunPivot.position = _anim.GetIKHintPosition(AvatarIKHint.RightElbow);
+        if(_weaponType == WeaponType.Main || _weaponType == WeaponType.Sub)
+        {
+            _trsfGunPivot.position = _anim.GetIKHintPosition(AvatarIKHint.RightElbow);
 
-        _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
-        _anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
-        _anim.SetIKPosition(AvatarIKGoal.LeftHand, _trsfLHandMount[(int)_weaponType].position);
-        _anim.SetIKRotation(AvatarIKGoal.LeftHand, _trsfLHandMount[(int)_weaponType].rotation);
+            _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+            _anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
+            _anim.SetIKPosition(AvatarIKGoal.LeftHand, _trsfLHandMount[(int)_weaponType].position);
+            _anim.SetIKRotation(AvatarIKGoal.LeftHand, _trsfLHandMount[(int)_weaponType].rotation);
 
-        _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
-        _anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-        _anim.SetIKPosition(AvatarIKGoal.RightHand, _trsfRHandMount[(int)_weaponType].position);
-        _anim.SetIKRotation(AvatarIKGoal.RightHand, _trsfRHandMount[(int)_weaponType].rotation);
+            _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+            _anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+            _anim.SetIKPosition(AvatarIKGoal.RightHand, _trsfRHandMount[(int)_weaponType].position);
+            _anim.SetIKRotation(AvatarIKGoal.RightHand, _trsfRHandMount[(int)_weaponType].rotation);
+        }
+        else if(_weaponType == WeaponType.melee)
+        {
+            _trsfGunPivot.position = _anim.GetIKHintPosition(AvatarIKHint.RightElbow);
+
+            _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0f);
+            _anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0f);
+
+            _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+            _anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+            _anim.SetIKPosition(AvatarIKGoal.RightHand, _trsfRHandMount[(int)_weaponType].position);
+            _anim.SetIKRotation(AvatarIKGoal.RightHand, _trsfRHandMount[(int)_weaponType].rotation);
+        }
 
     }
 }
