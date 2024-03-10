@@ -162,6 +162,11 @@ public class PlayerController : MonoBehaviour
             _weapons[index].SetActive(true);
             _anim.SetLayerWeight(1, 1f);
         }
+        else if(index == 3)
+        {
+            _weapons[index].SetActive(true);
+            _anim.SetLayerWeight(1, 1f);
+        }
     }
 
     private void OnAnimatorIK(int layerIndex)
