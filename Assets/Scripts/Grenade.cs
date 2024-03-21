@@ -35,6 +35,9 @@ public class Grenade : MonoBehaviour
 
         foreach (Collider nearbyObject in colls) 
         {
+            if (nearbyObject.CompareTag("Obstacle")) 
+                continue;
+
             Rigidbody rb = nearbyObject.GetComponent<Rigidbody>();
             if(rb != null)
             {

@@ -58,7 +58,7 @@ public class Knife : MonoBehaviour
     {
         if (_hitBox.IsHit())
         {
-            Destroy(_hitBox.GetDetectedCollider().gameObject);
+            _hitBox.GetDetectedCollider().gameObject.GetComponent<Enemy>().GetHit();
         }
     }
     public void EndAttack()

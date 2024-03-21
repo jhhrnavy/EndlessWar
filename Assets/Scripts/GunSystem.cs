@@ -25,6 +25,8 @@ public class GunSystem : MonoBehaviour
     private void Awake()
     {
         _readyToFire = true;
+
+
         _controls = new PlayerInputActions();
 
         _controls.GamePlay.Fire.started += context => StartFiring();
