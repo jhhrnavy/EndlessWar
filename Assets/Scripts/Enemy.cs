@@ -70,7 +70,6 @@ public class Enemy : MonoBehaviour
 
     public void Move()
     {
-
         //Vector3 direction = _fow.targetLastPosition - transform.position;
         //direction.y = 0f;
 
@@ -89,6 +88,16 @@ public class Enemy : MonoBehaviour
         {
             hasArrivedAtLastPoint = true;
         }
+    }
+
+    public void StopMoving()
+    {
+        _pathfinder.isStopped = true;
+    }
+
+    public void StartMoving()
+    {
+        _pathfinder.isStopped = false;
     }
 
     public void Rotate()

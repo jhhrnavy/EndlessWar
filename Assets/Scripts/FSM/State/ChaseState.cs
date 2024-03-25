@@ -13,6 +13,7 @@ public class ChaseState : IState
 
     public void Enter()
     {
+        _enemy.StartMoving();
     }
 
     public void Execute()

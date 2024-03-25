@@ -13,6 +13,7 @@ public class AttackState : IState
 
     public void Enter()
     {
+        _enemy.StopMoving();
     }
 
     public void Execute()
