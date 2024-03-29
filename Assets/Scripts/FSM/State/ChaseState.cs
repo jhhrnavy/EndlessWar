@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ChaseState : IState
@@ -30,6 +28,7 @@ public class ChaseState : IState
         }
         else
         {
+            _enemy.currentGun.SetTargetPosition(_enemy.Fow.targetLastPosition);
             if (_enemy.isfacingTarget)
             {
                 //Attack

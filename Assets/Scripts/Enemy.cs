@@ -3,10 +3,12 @@ using UnityEngine;
 using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
-    private IState currentState;
+    private IState _currentState;
     private FieldOfView _fow;
     private Rigidbody _rb;
     private NavMeshAgent _pathfinder;
+
+    public GunSystem currentGun;
 
     public int hp = 10;
     public float moveSpeed = 5f;
@@ -18,15 +20,11 @@ public class Enemy : MonoBehaviour
     public bool isfacingTarget = false;
     public bool hasArrivedAtLastPoint = false;
 
-    // 접촉한 벽 따라서 이동하기
-    public float collisionCheckDistance = 1f;
-    public LayerMask obstacleMask;
-    RaycastHit[] hits;
     public FieldOfView Fow { get => _fow; set => _fow = value; }
 
     private void Start()
     {
-        currentState = new IdleState(this);
+        _currentState = new IdleState(this);
         _fow = gameObject.GetComponent<FieldOfView>();
         _rb = gameObject.GetComponent<Rigidbody>();
         _pathfinder = GetComponent<NavMeshAgent>();
@@ -34,21 +32,29 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        currentState.Execute();
+        _currentState.Execute();
     }
 
     private void FixedUpdate()
     {
-        currentState.PhysicsExecute();
+        _currentState.PhysicsExecute();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet") && !_isDead)
+        {
+            GetHit();
+        }
     }
 
     public void ChangeState(IState newState)
     {
-        currentState.Exit();
+        _currentState.Exit();
 
-        currentState = newState;
+        _currentState = newState;
 
-        currentState.Enter();
+        _currentState.Enter();
     }
 
     public void GetHit()
@@ -60,28 +66,9 @@ public class Enemy : MonoBehaviour
             ChangeState(new DeadState(this));
         }
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Bullet") && !_isDead)
-        {
-            GetHit();
-        }
-    }
 
     public void Move()
     {
-        //Vector3 direction = _fow.targetLastPosition - transform.position;
-        //direction.y = 0f;
-
-        //_rb.MovePosition(_rb.position + direction.normalized * moveSpeed * Time.fixedDeltaTime);
-
-        //float distance = Vector3.Distance(_rb.position, _fow.targetLastPosition);
-
-        //if (distance <= minDotThreshold)
-        //{
-        //    hasArrivedAtLastPoint = true;
-        //}
-
         _pathfinder.SetDestination(_fow.targetLastPosition);
 
         if (_pathfinder.velocity == Vector3.zero)
@@ -102,7 +89,6 @@ public class Enemy : MonoBehaviour
 
     public void Rotate()
     {
-
         Vector3 direction = _fow.targetLastPosition - transform.position;
         direction.y = 0f;
         Quaternion targetRotation = Quaternion.LookRotation(direction);

@@ -1,29 +1,34 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class DeadState : MonoBehaviour, IState
+public class ReloadState : IState
 {
     private Enemy _enemy;
 
-    public DeadState(Enemy enemy)
+    public ReloadState(Enemy enemy)
     {
         _enemy = enemy;
     }
 
     public void Enter()
     {
-        Debug.Log("Dead");
-        _enemy.Die();
+        _enemy.currentGun.Reload();
+        _enemy.ChangeState(new IdleState(_enemy));
     }
 
     public void Execute()
     {
     }
+
     public void PhysicsExecute()
     {
+
     }
 
     public void Exit()
     {
+
     }
 
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackState : IState
@@ -14,26 +12,30 @@ public class AttackState : IState
     public void Enter()
     {
         _enemy.StopMoving();
+        _enemy.currentGun.StartFiring();
     }
 
     public void Execute()
     {
-        if(_enemy.isfacingTarget)
-            Debug.Log("АјАн!!");
-
         _enemy.Rotate();
 
+        _enemy.currentGun.SetTargetPosition(_enemy.Fow.targetLastPosition);
+
         if (_enemy.Fow.visibleTargets.Count == 0)
-        {
             _enemy.ChangeState(new ChaseState(_enemy));
-        }
+
+
+        if (_enemy.currentGun.leftBullet <= 0 && !_enemy.currentGun.IsReloading)
+            _enemy.ChangeState(new ReloadState(_enemy));
     }
+
     public void PhysicsExecute()
     {
     }
 
     public void Exit()
     {
+        _enemy.currentGun.EndFiring();
     }
 
 }
