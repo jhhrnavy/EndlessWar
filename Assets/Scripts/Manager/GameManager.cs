@@ -15,4 +15,10 @@ public class GameManager : Singleton<GameManager>
         uiManager.ActivePausePanel();
     }
 
+    public void ReStart()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(thisScene);
+    }
+
 }
