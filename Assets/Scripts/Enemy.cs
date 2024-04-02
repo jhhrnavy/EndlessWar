@@ -103,6 +103,7 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
+        StopMoving();
         StartCoroutine(DelayedDie());
     }
 

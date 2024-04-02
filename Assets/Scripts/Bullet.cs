@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy") || other.CompareTag("Obstacle"))
+        if (other.CompareTag("Enemy") || other.CompareTag("Obstacle") || other.CompareTag("Player"))
         {
             Destroy(gameObject);
         }

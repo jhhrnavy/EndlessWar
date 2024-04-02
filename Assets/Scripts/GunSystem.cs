@@ -18,7 +18,7 @@ public class GunSystem : MonoBehaviour
     public float fireRate, spread;
     public float reloadTime = 0.5f;
     private bool _readyToFire, _isFiring, _reloading;
-    public bool allowsAutoShot;
+    public bool allowsAutoShot = true;
 
     public Vector3 targetPosition;
 

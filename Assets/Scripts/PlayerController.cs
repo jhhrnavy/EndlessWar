@@ -4,29 +4,41 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     private PlayerInputActions _controls;
-
     private Rigidbody _rb;
     private  Animator _anim;
 
+    [SerializeField]
+    private HealthBarUI _healthBar;
+
     private Vector3 _moveInput;
 
+    // Spec
     [SerializeField]
     private float _moveSpeed = 5f;
 
     [SerializeField]
-    private float _rotateSpeed = 5f;
+    private float _hp = 10f;
+    [SerializeField]
+    private float _maxHp = 10f;
+
+    private bool _isDead = false;
 
     private Vector3 _rotDir;
 
-    public GameObject[] _weapons = new GameObject[4];
+    [SerializeField]
+    private GameObject[] _weapons = new GameObject[4];
 
     [SerializeField]
     private GunSystem _currentGun;
 
-    public Transform _trsfGunPivot;
+    [SerializeField]
+    private Transform _trsfGunPivot;
 
-    public Transform[] _trsfLHandMount;   //  총에 왼손이 위치할 지점
-    public Transform[] _trsfRHandMount;   //  총에 오른손이 위치할 지점
+    [SerializeField]
+    private Transform[] _trsfLHandMount;   //  총에 왼손이 위치할 지점
+
+    [SerializeField]
+    private Transform[] _trsfRHandMount;   //  총에 오른손이 위치할 지점
 
 
     WeaponType _weaponType = WeaponType.Main;
@@ -43,6 +55,9 @@ public class PlayerController : MonoBehaviour
     {
         _controls = new PlayerInputActions();
         _controls.GamePlay.WeaponSwitch.performed += context => SwitchWeapons((int)context.ReadValue<float>() - 1);
+
+        _rb = GetComponent<Rigidbody>();
+        _anim = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -57,10 +72,12 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        //_actions = new PlayerInputActions();
-        _rb = GetComponent<Rigidbody>();
-        _anim = GetComponent<Animator>();
+        // Set default waepon
         SwitchWeapons(0);
+
+        // Set Hp
+        _hp = _maxHp;
+        _healthBar.SetMaxHealth(_maxHp);
     }
 
     private void Update()
@@ -75,6 +92,7 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(_rotDir);
     }
 
+    #region Input Actions
     public void OnMove(InputAction.CallbackContext value)
     {
         if (value.started) return;
@@ -87,8 +105,6 @@ public class PlayerController : MonoBehaviour
             _anim.SetFloat("Walk", input.magnitude);
         else
             _anim.SetFloat("Walk", -input.magnitude);
-
-        Debug.Log(input.magnitude);
     }
 
     public void OnSwitchWeapons(InputAction.CallbackContext value)
@@ -106,6 +122,7 @@ public class PlayerController : MonoBehaviour
     //    if(value.performed)
     //        _currentGun.Fire(GetMouseHitPosition());
     //}
+    #endregion
 
     private Vector3 GetMouseHitPosition()
     {
@@ -162,6 +179,25 @@ public class PlayerController : MonoBehaviour
         {
             _weapons[index].SetActive(true);
             _anim.SetLayerWeight(1, 1f);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet") && !_isDead)
+        {
+            GetHit();
+        }
+    }
+
+    public void GetHit()
+    {
+        --_hp;
+        _healthBar.SetHealth(_hp);
+
+        if (_hp <= 0)
+        {
+            _isDead = true;
         }
     }
 
