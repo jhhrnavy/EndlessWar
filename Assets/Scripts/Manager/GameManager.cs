@@ -8,6 +8,16 @@ public class GameManager : Singleton<GameManager>
     public string thisScene;
     public UIManager uiManager;
 
+    private void OnEnable()
+    {
+        PlayerController.OnPlayerDeath += PlayerDied;
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.OnPlayerDeath -= PlayerDied;
+    }
+
     public void PauseOrContinue()
     {
         thisScene = SceneManager.GetActiveScene().name;
@@ -19,6 +29,11 @@ public class GameManager : Singleton<GameManager>
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(thisScene);
+    }
+
+    public void PlayerDied()
+    {
+        PauseOrContinue();
     }
 
 }

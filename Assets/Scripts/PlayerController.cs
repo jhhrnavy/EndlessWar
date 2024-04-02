@@ -1,9 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerInputActions _controls;
     private Rigidbody _rb;
     private  Animator _anim;
 
@@ -25,12 +25,14 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 _rotDir;
 
+    // Weapon
     [SerializeField]
     private GameObject[] _weapons = new GameObject[4];
 
     [SerializeField]
     private GunSystem _currentGun;
 
+    //Anim IK
     [SerializeField]
     private Transform _trsfGunPivot;
 
@@ -40,6 +42,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform[] _trsfRHandMount;   //  총에 오른손이 위치할 지점
 
+    public static event Action OnPlayerDeath;
 
     WeaponType _weaponType = WeaponType.Main;
 
@@ -178,8 +181,16 @@ public class PlayerController : MonoBehaviour
 
         if (_hp <= 0)
         {
-            _isDead = true;
+            Die();
         }
+    }
+
+    public void Die()
+    {
+        _isDead = true;
+
+        // 사망시 일시정지 및 재시작 패널 활성화 이벤트 발생
+        OnPlayerDeath?.Invoke();
     }
 
     private void OnAnimatorIK(int layerIndex)
