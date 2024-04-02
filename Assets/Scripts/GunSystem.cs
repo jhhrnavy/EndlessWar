@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GunSystem : MonoBehaviour
@@ -13,8 +14,11 @@ public class GunSystem : MonoBehaviour
     private PlayerInputActions _controls;
 
     public int damage;
-    public int leftBullet;
-    public int magazineSize;
+
+    public int currentAmmo; // 현재 장전된 총알 개수
+    public int magazineSize; // 탄창 크기
+    public int reserveAmmo; // 남아있는 총알
+
     public float fireRate, spread;
     public float reloadTime = 0.5f;
     private bool _readyToFire, _isFiring, _reloading;
@@ -33,6 +37,8 @@ public class GunSystem : MonoBehaviour
 
     public bool IsReloading { get => _reloading;}
 
+    public static event Action<int, int, int> OnAmmoChanged;
+
     private void Awake()
     {
         if (gameObject.GetComponentInParent<PlayerController>())
@@ -42,6 +48,8 @@ public class GunSystem : MonoBehaviour
             _controls.GamePlay.Fire.started += context => StartFiring();
             _controls.GamePlay.Fire.canceled += context => EndFiring();
             _controls.GamePlay.Reload.performed += context => Reload();
+
+            OnAmmoChanged?.Invoke(currentAmmo, magazineSize, reserveAmmo); // UI Update event call
         }
     }
 
@@ -64,7 +72,7 @@ public class GunSystem : MonoBehaviour
 
     private void Update()
     {
-        if (_readyToFire && _isFiring && !_reloading && leftBullet > 0)
+        if (_readyToFire && _isFiring && !_reloading && currentAmmo > 0)
         {
             if(owner == Owner.Player)
                 PerformFiring(GetMouseHitPosition());
@@ -83,8 +91,8 @@ public class GunSystem : MonoBehaviour
         _readyToFire = false;
 
         // Spread
-        float x = Random.Range(-spread, spread);
-        float y = Random.Range(-spread, spread);
+        float x = UnityEngine.Random.Range(-spread, spread);
+        float y = UnityEngine.Random.Range(-spread, spread);
 
         Vector3 direction = target - transform.position + new Vector3(x,y,0);
         direction.y = 0;
@@ -92,8 +100,12 @@ public class GunSystem : MonoBehaviour
         var bullet = Instantiate(_bulletPref, _firePos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().AddForce(direction.normalized * _bulletSpeed, ForceMode.Impulse);
 
-        leftBullet--;
-        if (leftBullet > 0)
+        currentAmmo--;
+
+        if (owner == Owner.Player)
+            OnAmmoChanged?.Invoke(currentAmmo, magazineSize, reserveAmmo); // UI Update event call
+
+        if (currentAmmo > 0)
         {
             Invoke("ResetFiring", fireRate);
         }
@@ -125,7 +137,22 @@ public class GunSystem : MonoBehaviour
 
     public void ReloadFinish()
     {
-        leftBullet = magazineSize;
+        int temp = (magazineSize - currentAmmo);
+
+        if(temp < reserveAmmo)
+        {
+            currentAmmo += temp;
+            reserveAmmo -= temp;
+        }
+        else
+        {
+            currentAmmo += reserveAmmo;
+            reserveAmmo = 0;
+        }
+
+        if(owner == Owner.Player)
+            OnAmmoChanged?.Invoke(currentAmmo, magazineSize, reserveAmmo); // UI Update event call
+
         _reloading = false;
         ResetFiring();
     }

@@ -42,9 +42,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform[] _trsfRHandMount;   //  총에 오른손이 위치할 지점
 
+    WeaponType _weaponType = WeaponType.Main;
+
+    // event
     public static event Action OnPlayerDeath;
 
-    WeaponType _weaponType = WeaponType.Main;
 
     enum WeaponType
     {

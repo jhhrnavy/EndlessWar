@@ -25,7 +25,7 @@ public class AttackState : IState
             _enemy.ChangeState(new ChaseState(_enemy));
 
 
-        if (_enemy.currentGun.leftBullet <= 0 && !_enemy.currentGun.IsReloading)
+        if (_enemy.currentGun.currentAmmo <= 0 && !_enemy.currentGun.IsReloading)
             _enemy.ChangeState(new ReloadState(_enemy));
     }
 
