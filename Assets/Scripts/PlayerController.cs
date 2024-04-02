@@ -169,16 +169,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Bullet") && !_isDead)
-        {
-            GetHit();
-        }
-    }
-
     public void GetHit()
     {
+        if(_isDead) return;
+
         --_hp;
         _healthBar.SetHealth(_hp);
 

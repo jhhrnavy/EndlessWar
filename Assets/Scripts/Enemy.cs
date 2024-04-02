@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.AI;
 public class Enemy : MonoBehaviour
@@ -40,14 +41,6 @@ public class Enemy : MonoBehaviour
         _currentState.PhysicsExecute();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Bullet") && !_isDead)
-        {
-            GetHit();
-        }
-    }
-
     public void ChangeState(IState newState)
     {
         _currentState.Exit();
@@ -59,6 +52,8 @@ public class Enemy : MonoBehaviour
 
     public void GetHit()
     {
+        if (_isDead) return;
+
         --hp;
         if(hp <= 0)
         {
