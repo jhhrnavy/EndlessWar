@@ -53,21 +53,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        _controls = new PlayerInputActions();
-        _controls.GamePlay.WeaponSwitch.performed += context => SwitchWeapons((int)context.ReadValue<float>() - 1);
-
         _rb = GetComponent<Rigidbody>();
         _anim = GetComponent<Animator>();
-    }
-
-    private void OnEnable()
-    {
-        _controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _controls.Disable();
     }
 
     private void Start()
@@ -119,7 +106,7 @@ public class PlayerController : MonoBehaviour
 
     //public void OnFire(InputAction.CallbackContext value)
     //{
-    //    if(value.performed)
+    //    if (value.performed)
     //        _currentGun.Fire(GetMouseHitPosition());
     //}
     #endregion
