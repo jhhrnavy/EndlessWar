@@ -375,14 +375,14 @@ MonoBehaviour:
   currentAmmo: 30
   magazineSize: 30
   reserveAmmo: 120
-  fireRate: 0.1
-  spread: 0.3
+  fireRate: 0.5
+  spread: 1
   reloadTime: 1
   allowsAutoShot: 1
   targetPosition: {x: 0, y: 0, z: 0}
   _bulletPref: {fileID: 5790209766866588704, guid: 18640462562fe4c45986433752bfdd5c, type: 3}
   _firePos: {fileID: 7162347893407190496}
-  _bulletSpeed: 20
+  _bulletSpeed: 25
 --- !u!1 &4767089458178512848
 GameObject:
   m_ObjectHideFlags: 0

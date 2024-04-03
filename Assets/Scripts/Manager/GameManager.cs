@@ -8,6 +8,11 @@ public class GameManager : Singleton<GameManager>
     public string thisScene;
     public UIManager uiManager;
 
+    private void Awake()
+    {
+        thisScene = SceneManager.GetActiveScene().name;
+    }
+
     private void OnEnable()
     {
         PlayerController.OnPlayerDeath += PlayerDied;
@@ -20,7 +25,6 @@ public class GameManager : Singleton<GameManager>
 
     public void PauseOrContinue()
     {
-        thisScene = SceneManager.GetActiveScene().name;
         Time.timeScale = (Time.timeScale == 1) ? 0f : 1f;
         uiManager.ActivePausePanel();
     }
