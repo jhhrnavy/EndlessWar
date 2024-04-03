@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    int damage = 3;
+
     private void Start()
     {
         Destroy(gameObject, 2f);
@@ -11,12 +13,12 @@ public class Bullet : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            other.GetComponent<Enemy>().GetHit();
+            other.GetComponent<Enemy>().GetHit(damage);
             Destroy(gameObject);
         }
         else if (other.CompareTag("Player"))
         {
-            other.GetComponent<PlayerController>().GetHit();
+            other.GetComponent<PlayerController>().GetHit(damage);
             Destroy(gameObject);
         }
         else if (other.CompareTag("Obstacle"))

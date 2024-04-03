@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
@@ -50,11 +51,12 @@ public class Enemy : MonoBehaviour
         _currentState.Enter();
     }
 
-    public void GetHit()
+    public void GetHit(int damage)
     {
         if (_isDead) return;
 
-        --hp;
+        hp -= damage;
+
         if(hp <= 0)
         {
             _isDead = true;

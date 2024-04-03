@@ -8,10 +8,7 @@ public class Knife : MonoBehaviour
     [SerializeField]
     private HitBox _hitBox;
 
-    private AnimatorStateInfo stateInfo;
-    public bool getStateInfo = false;
-
-    public int damage;
+    public int damage = 10;
     public float attackSpeed;
 
     [SerializeField]
@@ -55,7 +52,7 @@ public class Knife : MonoBehaviour
     {
         if (_hitBox.IsHit())
         {
-            _hitBox.GetDetectedCollider().gameObject.GetComponent<Enemy>().GetHit();
+            _hitBox.GetDetectedCollider().gameObject.GetComponent<Enemy>().GetHit(damage);
         }
     }
     public void EndAttack()

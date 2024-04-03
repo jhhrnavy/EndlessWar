@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: {fileID: 3943554466452458005}
-  hp: 3
+  hp: 50
   moveSpeed: 3
   rotSpeed: 8
   minDotThreshold: 1
