@@ -61,7 +61,7 @@ public class NewGun : NewWeapon, IFireable
         Destroy(muzzle, 0.1f);
 
         currentAmmo--;
-        OnAmmoChanged?.Invoke(currentAmmo, magazineSize, reserveAmmo);
+        UpdateAmmoDisplay();
     }
 
     public void FireSoundEfx()
@@ -81,6 +81,10 @@ public class NewGun : NewWeapon, IFireable
         _targetPosition = targetPosition;
     }
 
+    public void UpdateAmmoDisplay()
+    {
+        OnAmmoChanged?.Invoke(currentAmmo, magazineSize, reserveAmmo);
+    }
     #endregion
 
     #region Private Method
@@ -107,8 +111,7 @@ public class NewGun : NewWeapon, IFireable
             currentAmmo += reserveAmmo;
             reserveAmmo = 0;
         }
-
-        OnAmmoChanged?.Invoke(currentAmmo, magazineSize, reserveAmmo);
+        UpdateAmmoDisplay();
     }
 
     private IEnumerator ReloadRoutine()

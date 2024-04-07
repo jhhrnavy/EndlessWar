@@ -95,6 +95,7 @@ public class EquipmentManager : MonoBehaviour
         _curWeaponRb.velocity = GetComponent<Rigidbody>().velocity;
         _curWeaponRb.AddForce(transform.forward * dropForwardForce, ForceMode.Impulse);
         _curWeaponRb.AddForce(transform.up * dropUpwardForce, ForceMode.Impulse);
+        equipedWeapon.gameObject.layer = 10;
     }
 
     public void EquipWeapon(int weaponStyle)

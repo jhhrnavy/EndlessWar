@@ -34,14 +34,15 @@ public class PickUpController : MonoBehaviour
     {
         // TODO: 캐스팅 문제 없나?
         var newWeapon = weapon.GetComponent<NewWeapon>();
-        weapon.layer = WEAPON_LAYER;
+
         if (_inventory.GetItem((int)newWeapon.weaponStyle) == null)
         {
+            weapon.layer = WEAPON_LAYER;
             _inventory.AddItem(newWeapon);
+            // weaponHolder에 넣기
+            _equipmentManager.AddEquipment(weapon);
+            weapon.SetActive(false);
         }
 
-        // weaponHolder에 넣기
-        _equipmentManager.AddEquipment(weapon);
-        weapon.SetActive(false);
     }
 }

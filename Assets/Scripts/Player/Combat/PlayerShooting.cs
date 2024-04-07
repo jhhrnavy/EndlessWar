@@ -45,6 +45,7 @@ public class PlayerShooting : PlayerCombat
     {
         gun = (NewGun)weapon;
         gun.OnAmmoChanged += _ammoDisplay.SetAmmo;
+        gun.UpdateAmmoDisplay();
     }
 
     #endregion

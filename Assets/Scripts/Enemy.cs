@@ -99,7 +99,22 @@ public class Enemy : MonoBehaviour
     public void Die()
     {
         StopMoving();
+        DropWeapon();
         StartCoroutine(DelayedDie());
+    }
+
+    public void DropWeapon()
+    {
+        // Physics Drop weapon
+        currentGun.transform.SetParent(null);
+        var gunRb = currentGun.GetComponent<Rigidbody>();
+        gunRb.isKinematic = false;
+        currentGun.GetComponent<Collider>().isTrigger = false;
+        gunRb.velocity = GetComponent<Rigidbody>().velocity;
+        gunRb.AddForce(transform.forward * 4f, ForceMode.Impulse); // Throwing force forward
+        gunRb.AddForce(transform.up * 3f, ForceMode.Impulse); // Throwing force upward
+        currentGun.gameObject.layer = 10; // Pickable
+        currentGun = null;
     }
 
     private IEnumerator DelayedDie()
