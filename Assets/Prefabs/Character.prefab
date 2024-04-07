@@ -1328,8 +1328,8 @@ MonoBehaviour:
     m_ActionName: GamePlay/Fire[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerShooting, Assembly-CSharp
+      - m_Target: {fileID: 2254373355896848465}
+        m_TargetAssemblyTypeName: NewPlayerShooting, Assembly-CSharp
         m_MethodName: OnReload
         m_Mode: 0
         m_Arguments:
@@ -1517,6 +1517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 0}
+  _ammoDisplay: {fileID: 0}
   weaponStyle: 0
 --- !u!114 &7088360355500546299
 MonoBehaviour:
@@ -1532,7 +1533,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bombPrefabs: {fileID: 459411715210794155, guid: 0217f2fa8e5f3d14f8335a390e319d0d, type: 3}
   _startPoint: {fileID: 5502036880615032673}
-  _throwSpeed: 5
+  _throwForwardForce: 6
+  _throwUpwardForce: 4
 --- !u!1 &4169145213527109846
 GameObject:
   m_ObjectHideFlags: 0
@@ -2843,6 +2845,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2418815062057082377}
     m_Modifications:
+    - target: {fileID: 769823607003779700, guid: a4ad3a13ee3e3ba4d8ef433e38cbe9c3, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5555178364256178047, guid: a4ad3a13ee3e3ba4d8ef433e38cbe9c3, type: 3}
+      propertyPath: damage
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6388017159626811142, guid: a4ad3a13ee3e3ba4d8ef433e38cbe9c3, type: 3}
       propertyPath: m_Name
       value: Knife

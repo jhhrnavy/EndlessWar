@@ -34,6 +34,9 @@ public class PlayerController : MonoBehaviour
     #region Properties
 
     public int Hp { get => _hp; set => _hp = value; }
+    public int MaxHp { get => _maxHp;}
+    public int Shield { get => _shield; set => _shield = value; }
+    public int MaxShield { get => _maxShield;}
 
     #endregion
 
@@ -46,6 +49,7 @@ public class PlayerController : MonoBehaviour
         _combat[0] = GetComponent<PlayerShooting>();
         _combat[1] = GetComponent<PlayerMeleeAttack>();
         _combat[2] = GetComponent<BombShooter>();
+
     }
 
     private void Start()

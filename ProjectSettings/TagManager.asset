@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Bullet
   - Obstacle
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -14,11 +15,11 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - Targets
+  - Enemy
+  - Player
   - Obstacles
   - Weapons
-  - 
+  - Pickable
   - 
   - 
   - 

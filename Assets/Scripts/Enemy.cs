@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody _rb;
     private NavMeshAgent _pathfinder;
 
-    public GunSystem currentGun;
+    public NewGun currentGun;
 
     public int hp = 10;
     public float moveSpeed = 5f;

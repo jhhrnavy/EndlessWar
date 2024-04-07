@@ -4,7 +4,8 @@ public class BombShooter : PlayerCombat
 {
     [SerializeField] private GameObject _bombPrefabs;
     [SerializeField] private Transform _startPoint;
-    [SerializeField] private float _throwSpeed = 5f;
+    [SerializeField] private float _throwForwardForce = 5f;
+    [SerializeField] private float _throwUpwardForce = 5f;
 
     public override void Attack()
     {
@@ -13,14 +14,17 @@ public class BombShooter : PlayerCombat
 
     public void ThrowBomb()
     {
-        Vector3 direction = GetMouseHitPosition() - transform.position;
-        direction.y = 0f;
-        direction.Normalize();
-        GameObject bomb = Instantiate(_bombPrefabs, _startPoint.position + (direction * 2f), Quaternion.identity);
-        bomb.GetComponent<Rigidbody>().AddForce(direction * _throwSpeed, ForceMode.Impulse);
+
+        GameObject bomb = Instantiate(_bombPrefabs, _startPoint.position + transform.forward * 1f, Quaternion.identity);
+
+        Vector3 force = transform.forward * _throwForwardForce + transform.up * _throwUpwardForce;
+
+        Vector3 velocity = transform.GetComponent<Rigidbody>().velocity;
+        bomb.GetComponent<Rigidbody>().AddForce(force + velocity, ForceMode.Impulse);
         bomb.GetComponent<Bomb>().Explode();
     }
 
+    #region Unused Method
     private Vector3 GetMouseHitPosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -35,4 +39,6 @@ public class BombShooter : PlayerCombat
 
         return mousePosition;
     }
+
+    #endregion
 }

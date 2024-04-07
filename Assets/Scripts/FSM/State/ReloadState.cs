@@ -10,11 +10,12 @@ public class ReloadState : IState
     public void Enter()
     {
         _enemy.currentGun.Reload();
-        _enemy.ChangeState(new IdleState(_enemy));
     }
 
     public void Execute()
     {
+        if(_enemy.currentGun.currentAmmo == _enemy.currentGun.magazineSize)
+            _enemy.ChangeState(new IdleState(_enemy));
     }
 
     public void PhysicsExecute()

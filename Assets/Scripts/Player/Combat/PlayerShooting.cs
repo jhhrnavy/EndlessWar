@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerShooting : PlayerCombat
 {
     [SerializeField] public NewGun gun;
+    [SerializeField] private MagazineUI _ammoDisplay;
     [SerializeField] private WeaponStyle weaponStyle;
     #region Public Method
 
@@ -35,14 +36,15 @@ public class PlayerShooting : PlayerCombat
     {
         if (context.started)
         {
-            Debug.Log("reload");
-            gun.Reloading();
+            if(gun != null)
+                gun.Reload();
         }
     }
 
     public void SetGun(NewWeapon weapon)
     {
         gun = (NewGun)weapon;
+        gun.OnAmmoChanged += _ammoDisplay.SetAmmo;
     }
 
     #endregion

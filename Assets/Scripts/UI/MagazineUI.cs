@@ -11,16 +11,6 @@ public class MagazineUI : MonoBehaviour
     public TextMeshProUGUI magazineSizeText;
     public TextMeshProUGUI reserveAmmoText;
 
-    private void OnEnable()
-    {
-        NewGun.OnAmmoChanged += SetAmmo;
-    }
-
-    private void OnDisable()
-    {
-        NewGun.OnAmmoChanged -= SetAmmo;
-    }
-
     public void SetAmmo(int currentAmmo, int magazineSize, int reserveAmmo)
     {
         this.currentAmmo = currentAmmo;

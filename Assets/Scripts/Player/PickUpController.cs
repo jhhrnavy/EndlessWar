@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PickUpController : MonoBehaviour
@@ -6,7 +7,7 @@ public class PickUpController : MonoBehaviour
     private EquipmentManager _equipmentManager;
     [SerializeField] private float _pickUpRadius = 2;
     [SerializeField] private LayerMask _weaponMask;
-
+    private const int WEAPON_LAYER = 9;
     private void Start()
     {
         _inventory = GetComponent<Inventory>();
@@ -33,7 +34,7 @@ public class PickUpController : MonoBehaviour
     {
         // TODO: 캐스팅 문제 없나?
         var newWeapon = weapon.GetComponent<NewWeapon>();
-
+        weapon.layer = WEAPON_LAYER;
         if (_inventory.GetItem((int)newWeapon.weaponStyle) == null)
         {
             _inventory.AddItem(newWeapon);

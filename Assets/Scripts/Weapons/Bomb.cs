@@ -7,6 +7,7 @@ public class Bomb : NewWeapon
     [SerializeField] private float _countdown = 3f;
     [SerializeField] private float _radius = 5f;
     [SerializeField] private float _explosionForce = 700f;
+    [SerializeField] private LayerMask _targetLayer;
 
     public void Explode()
     {
@@ -17,7 +18,7 @@ public class Bomb : NewWeapon
     {
         GameObject expEfx = Instantiate(_explosionEffect, transform.position, transform.rotation);
 
-        Collider[] colls = Physics.OverlapSphere(transform.position, _radius);
+        Collider[] colls = Physics.OverlapSphere(transform.position, _radius, _targetLayer);
 
         foreach (Collider nearbyObject in colls)
         {
@@ -32,7 +33,7 @@ public class Bomb : NewWeapon
             }
         }
         Destroy(expEfx, 0.5f);
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
     public IEnumerator ExplodeRountine()
