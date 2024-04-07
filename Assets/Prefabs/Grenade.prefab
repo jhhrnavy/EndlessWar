@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7599273120007617953}
   - component: {fileID: 5951862614060083959}
   - component: {fileID: 540590942110954173}
-  - component: {fileID: 1823091773533732995}
   - component: {fileID: 1255692923448656453}
   - component: {fileID: 7489956471315075487}
+  - component: {fileID: 3946909418448966816}
   m_Layer: 0
   m_Name: Grenade
   m_TagString: Untagged
@@ -35,6 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2729096265086766298}
+  - {fileID: 6726390068943525478}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5951862614060083959
@@ -87,23 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1823091773533732995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 459411715210794155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e51ee039f378d6e498514a1d22c5dacc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  explosionEffect: {fileID: 1828176872806910, guid: 64891a0eb28db934898420d80ca07cb3, type: 3}
-  delay: 3
-  radius: 5
-  explosionForce: 500
-  damage: 1
 --- !u!54 &1255692923448656453
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -152,6 +136,61 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.07838227
   m_Center: {x: 0, y: 0.027264815, z: 0}
+--- !u!114 &3946909418448966816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459411715210794155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e51ee039f378d6e498514a1d22c5dacc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: Grenade
+  weaponType: 3
+  weaponStyle: 3
+  localPosition: {x: 0, y: 0, z: 0}
+  localRotation: {x: 0, y: 0, z: 0}
+  localScale: {x: 0, y: 0, z: 0}
+  trsfRHandMount: {fileID: 6726390068943525478}
+  trsfLHandMount: {fileID: 0}
+  _explosionEffect: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4, type: 3}
+  _countdown: 3
+  _radius: 5
+  _explosionForce: 700
+--- !u!1 &3141084563464377106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6726390068943525478}
+  m_Layer: 0
+  m_Name: RHandle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6726390068943525478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3141084563464377106}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0339, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7599273120007617953}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5827021494403771294
 GameObject:
   m_ObjectHideFlags: 0

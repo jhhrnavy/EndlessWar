@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Fire",
+                    "name": "Attack",
                     "type": "Value",
                     "id": "52eb0285-97ff-4790-8aa7-f585ac8096c1",
                     "expectedControlType": "Button",
@@ -42,18 +42,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Melee Attack",
+                    "name": "Pause",
                     "type": "Button",
-                    "id": "a0ac2ec9-1f70-4471-bdf5-e51fc479d373",
+                    "id": "54f5a48f-2d57-4d46-8e84-e0a7659a9cee",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pause",
+                    "name": "Drop Weapon",
                     "type": "Button",
-                    "id": "54f5a48f-2d57-4d46-8e84-e0a7659a9cee",
+                    "id": "420542e9-21c3-4553-8d7e-08201337bd6b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -123,7 +123,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Fire",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -184,23 +184,23 @@
                 },
                 {
                     "name": "",
-                    "id": "78f2b620-c108-41a8-b1a2-5cba03030de3",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Melee Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "d8772ec7-f284-4c18-b3a6-35d733611260",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "61e93619-f462-4198-8389-4df5ead43302",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

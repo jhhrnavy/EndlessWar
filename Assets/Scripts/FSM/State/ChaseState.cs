@@ -44,7 +44,7 @@ public class ChaseState : IState
         if (_enemy.Fow.visibleTargets.Count == 0 && _enemy.isfacingTarget)
             _enemy.Move();
 
-            _enemy.Rotate();
+        _enemy.Rotate();
 
     }
 

@@ -1,29 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BombShooter : MonoBehaviour
+public class BombShooter : PlayerCombat
 {
-    private PlayerInputActions _controls;
     [SerializeField] private GameObject _bombPrefabs;
     [SerializeField] private Transform _startPoint;
     [SerializeField] private float _throwSpeed = 5f;
 
-    private void Awake()
+    public override void Attack()
     {
-        _controls = new PlayerInputActions();
-
-        _controls.GamePlay.Fire.started += context => ThrowBomb();
-    }
-
-    private void OnEnable()
-    {
-        _controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _controls.Disable();
+        ThrowBomb();
     }
 
     public void ThrowBomb()
@@ -33,6 +18,7 @@ public class BombShooter : MonoBehaviour
         direction.Normalize();
         GameObject bomb = Instantiate(_bombPrefabs, _startPoint.position + (direction * 2f), Quaternion.identity);
         bomb.GetComponent<Rigidbody>().AddForce(direction * _throwSpeed, ForceMode.Impulse);
+        bomb.GetComponent<Bomb>().Explode();
     }
 
     private Vector3 GetMouseHitPosition()

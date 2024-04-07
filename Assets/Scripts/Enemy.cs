@@ -1,6 +1,4 @@
-using JetBrains.Annotations;
 using System.Collections;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.AI;
 public class Enemy : MonoBehaviour
@@ -57,7 +55,7 @@ public class Enemy : MonoBehaviour
 
         hp -= damage;
 
-        if(hp <= 0)
+        if (hp <= 0)
         {
             _isDead = true;
             ChangeState(new DeadState(this));
@@ -92,7 +90,7 @@ public class Enemy : MonoBehaviour
         Quaternion rotation = Quaternion.Lerp(_rb.rotation, targetRotation, rotSpeed * Time.fixedDeltaTime);
         _rb.MoveRotation(rotation);
         float dot = Vector3.Dot(transform.forward, direction.normalized);
-        if(dot >= 0.95f)
+        if (dot >= 0.95f)
             isfacingTarget = true;
         else
             isfacingTarget = false;

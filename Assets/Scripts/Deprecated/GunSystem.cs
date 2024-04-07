@@ -24,61 +24,72 @@ public class GunSystem : MonoBehaviour
     private bool _readyToFire, _isFiring, _reloading;
     public bool allowsAutoShot = true;
 
-    public Vector3 targetPosition;
+    private Vector3 targetPosition;
 
     [SerializeField]
     private GameObject _bulletPref;
 
     [SerializeField]
     private Transform _firePos;
-     
+
     [SerializeField]
     private float _bulletSpeed;
 
-    public bool IsReloading { get => _reloading;}
+
+    // Weapon Handle Data
+    public Vector3 localPosition;
+    public Vector3 localRotation;
+    public Vector3 localScale;
+
+    public bool IsReloading { get => _reloading; }
 
     public static event Action<int, int, int> OnAmmoChanged;
 
-    private void Awake()
-    {
-        if (gameObject.GetComponentInParent<PlayerController>())
-        {
-            owner = Owner.Player;
-            _controls = new PlayerInputActions();
-            _controls.GamePlay.Fire.started += context => StartFiring();
-            _controls.GamePlay.Fire.canceled += context => EndFiring();
-            _controls.GamePlay.Reload.performed += context => Reload();
+    //private void Awake()
+    //{
+    //    if (gameObject.GetComponentInParent<PlayerController>())
+    //    {
+    //        owner = Owner.Player;
+    //        _controls = new PlayerInputActions();
+    //        _controls.GamePlay.Fire.started += context => StartFiring();
+    //        _controls.GamePlay.Fire.canceled += context => EndFiring();
+    //        _controls.GamePlay.Reload.performed += context => Reload();
 
-            OnAmmoChanged?.Invoke(currentAmmo, magazineSize, reserveAmmo); // UI Update event call
-        }
-    }
+    //        OnAmmoChanged?.Invoke(currentAmmo, magazineSize, reserveAmmo); // UI Update event call
+    //    }
+    //}
 
-    private void Start()
-    {
-        _readyToFire = true;
-    }
+    //private void Start()
+    //{
+    //    _readyToFire = true;
+    //}
 
-    private void OnEnable()
-    {
-        if (owner == Owner.Player)
-            _controls.Enable();
-    }
+    //private void OnEnable()
+    //{
+    //    if (owner == Owner.Player)
+    //        _controls.Enable();
+    //}
 
-    private void OnDisable()
-    {
-        if (owner == Owner.Player)
-            _controls.Disable();
-    }
+    //private void OnDisable()
+    //{
+    //    if (owner == Owner.Player)
+    //        _controls.Disable();
+    //}
 
-    private void Update()
+    //private void Update()
+    //{
+    //    if (_readyToFire && _isFiring && !_reloading && currentAmmo > 0)
+    //    {
+    //        if (owner == Owner.Player)
+    //            PerformFiring(GetMouseHitPosition());
+    //        else if (owner == Owner.Enemy)
+    //            PerformFiring(targetPosition);
+    //    }
+    //}
+
+    public void SetPosition()
     {
-        if (_readyToFire && _isFiring && !_reloading && currentAmmo > 0)
-        {
-            if(owner == Owner.Player)
-                PerformFiring(GetMouseHitPosition());
-            else if (owner == Owner.Enemy)
-                PerformFiring(targetPosition);
-        }
+        transform.localPosition = localPosition;
     }
 
     public void StartFiring()
@@ -94,7 +105,7 @@ public class GunSystem : MonoBehaviour
         float x = UnityEngine.Random.Range(-spread, spread);
         float y = UnityEngine.Random.Range(-spread, spread);
 
-        Vector3 direction = target - transform.position + new Vector3(x,y,0);
+        Vector3 direction = target - transform.position + new Vector3(x, y, 0);
         direction.y = 0;
 
         var bullet = Instantiate(_bulletPref, _firePos.position, Quaternion.identity);
@@ -120,7 +131,7 @@ public class GunSystem : MonoBehaviour
     public void EndFiring()
     {
         _isFiring = false;
-    } 
+    }
 
     public void ResetFiring()
     {
@@ -139,7 +150,7 @@ public class GunSystem : MonoBehaviour
     {
         int temp = (magazineSize - currentAmmo);
 
-        if(temp < reserveAmmo)
+        if (temp < reserveAmmo)
         {
             currentAmmo += temp;
             reserveAmmo -= temp;
@@ -150,7 +161,7 @@ public class GunSystem : MonoBehaviour
             reserveAmmo = 0;
         }
 
-        if(owner == Owner.Player)
+        if (owner == Owner.Player)
             OnAmmoChanged?.Invoke(currentAmmo, magazineSize, reserveAmmo); // UI Update event call
 
         _reloading = false;

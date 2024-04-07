@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class AttackState : IState
 {
     private Enemy _enemy;

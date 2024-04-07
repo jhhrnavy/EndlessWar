@@ -12,7 +12,7 @@ public class Stopwatch : MonoBehaviour
 
     private void Update()
     {
-        if(_isRunning)
+        if (_isRunning)
         {
             _elapsedTime += Time.deltaTime;
             UpdateTimeText();

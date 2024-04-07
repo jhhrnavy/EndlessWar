@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -15,12 +13,12 @@ public class MagazineUI : MonoBehaviour
 
     private void OnEnable()
     {
-        GunSystem.OnAmmoChanged += SetAmmo;
+        NewPlayerShooting.OnAmmoChanged += SetAmmo;
     }
 
     private void OnDisable()
     {
-        GunSystem.OnAmmoChanged -= SetAmmo;
+        NewPlayerShooting.OnAmmoChanged -= SetAmmo;
     }
 
     public void SetAmmo(int currentAmmo, int magazineSize, int reserveAmmo)

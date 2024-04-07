@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 public class HitBox : MonoBehaviour
@@ -12,7 +9,7 @@ public class HitBox : MonoBehaviour
 
     private void Update()
     {
-        if(_hitCol == null)
+        if (_hitCol == null)
         {
             _hitCol = null;
             _isHit = false;
