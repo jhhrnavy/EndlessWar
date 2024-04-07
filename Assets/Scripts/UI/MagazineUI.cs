@@ -13,12 +13,12 @@ public class MagazineUI : MonoBehaviour
 
     private void OnEnable()
     {
-        NewPlayerShooting.OnAmmoChanged += SetAmmo;
+        NewGun.OnAmmoChanged += SetAmmo;
     }
 
     private void OnDisable()
     {
-        NewPlayerShooting.OnAmmoChanged -= SetAmmo;
+        NewGun.OnAmmoChanged -= SetAmmo;
     }
 
     public void SetAmmo(int currentAmmo, int magazineSize, int reserveAmmo)

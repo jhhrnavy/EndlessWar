@@ -5,7 +5,7 @@ public class EquipmentManager : MonoBehaviour
 {
     private Inventory _inventory;
     private WeaponIKController _weaponIKController;
-    private NewPlayerShooting _playerShooting;
+    private PlayerShooting _playerShooting;
     private PlayerMeleeAttack _playerMeleeAttack;
 
     [SerializeField] private Transform _weaponHolder;
@@ -25,7 +25,7 @@ public class EquipmentManager : MonoBehaviour
     {
         _weaponIKController = GetComponent<WeaponIKController>();
         _inventory = GetComponent<Inventory>();
-        _playerShooting = GetComponent<NewPlayerShooting>();
+        _playerShooting = GetComponent<PlayerShooting>();
         _playerMeleeAttack = GetComponent<PlayerMeleeAttack>();
 
         //// 인벤토리에 이미 있는 아이템 인스턴스

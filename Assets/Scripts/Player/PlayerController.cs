@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
         _anim = GetComponent<Animator>();
         _equipmentManager = GetComponent<EquipmentManager>();
         _combat = new PlayerCombat[3];
-        _combat[0] = GetComponent<NewPlayerShooting>();
+        _combat[0] = GetComponent<PlayerShooting>();
         _combat[1] = GetComponent<PlayerMeleeAttack>();
         _combat[2] = GetComponent<BombShooter>();
     }
