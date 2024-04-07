@@ -9,6 +9,7 @@ public class NewGun : NewWeapon, IFireable
     public float bulletSpeed;
 
     [Space, Header("Gun")]
+    public GameObject muzzleFlashParticles;
     public int currentAmmo;
     public int magazineSize;
     public int reserveAmmo; // ÀÜ¿© ÃÑ¾Ë
@@ -48,6 +49,9 @@ public class NewGun : NewWeapon, IFireable
 
         var bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().AddForce(direction.normalized * bulletSpeed, ForceMode.Impulse);
+
+        var muzzle = Instantiate(muzzleFlashParticles, firePoint.position, Quaternion.identity);
+        Destroy(muzzle, 0.1f);
     }
 
     public void Reloading()

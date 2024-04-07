@@ -154,6 +154,8 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region Private Methods
+
     private Vector3 GetMouseHitPosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -197,4 +199,7 @@ public class PlayerController : MonoBehaviour
         if (_shieldBar != null)
             _shieldBar.SetInit(_maxShield);
     }
+
+    #endregion
+
 }
