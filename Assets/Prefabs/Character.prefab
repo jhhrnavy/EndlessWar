@@ -1417,10 +1417,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   _moveSpeed: 7
-  _hp: 100
-  _maxHp: 100
-  _shield: 100
-  _maxShield: 100
+  _hp: 10
+  _maxHp: 10
+  _shield: 10
+  _maxShield: 10
 --- !u!114 &2127237928165333614
 MonoBehaviour:
   m_ObjectHideFlags: 0

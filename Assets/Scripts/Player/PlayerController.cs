@@ -8,8 +8,6 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody _rb;
     private Animator _anim;
-    [SerializeField] private HealthBarUI _healthBar;
-    [SerializeField] private ShieldBarUI _shieldBar;
 
     // 0 : Ranged Atk, 1 : Melee Atk, 2 : Throwing
     [SerializeField] private PlayerCombat[] _combat;
@@ -34,9 +32,9 @@ public class PlayerController : MonoBehaviour
     #region Properties
 
     public int Hp { get => _hp; set => _hp = value; }
-    public int MaxHp { get => _maxHp;}
+    public int MaxHp { get => _maxHp; }
     public int Shield { get => _shield; set => _shield = value; }
-    public int MaxShield { get => _maxShield;}
+    public int MaxShield { get => _maxShield; }
 
     #endregion
 
@@ -49,6 +47,7 @@ public class PlayerController : MonoBehaviour
         _combat[0] = GetComponent<PlayerShooting>();
         _combat[1] = GetComponent<PlayerMeleeAttack>();
         _combat[2] = GetComponent<BombShooter>();
+
 
     }
 
@@ -86,7 +85,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if(_equipmentManager.equipedWeapon == null) return;
+        if (_equipmentManager.equipedWeapon == null) return;
 
         if (context.started)
         {
@@ -117,11 +116,9 @@ public class PlayerController : MonoBehaviour
         if (damage > 0)
             Hp -= damage;
 
-        if(_healthBar != null)
-            _healthBar.SetHealth(_hp);
+        UIManager.Instance?.HealthBar.SetHealth(_hp);
 
-        if(_shieldBar != null)
-            _shieldBar.SetShield(_shield);
+        UIManager.Instance?.ShieldBar.SetShield(_shield);
 
         if (_hp <= 0)
             Die();
@@ -134,7 +131,7 @@ public class PlayerController : MonoBehaviour
         if (_hp > _maxHp)
             _hp = _maxHp;
 
-        _healthBar.SetHealth(_hp);
+        UIManager.Instance?.HealthBar.SetHealth(_hp);
     }
 
     public void GetShield(int amount)
@@ -144,8 +141,7 @@ public class PlayerController : MonoBehaviour
         if (_shield > _maxShield)
             _shield = _maxShield;
 
-        _shieldBar.SetShield(_shield);
-
+        UIManager.Instance?.ShieldBar.SetShield(_shield);
     }
 
     public void Die()
@@ -191,17 +187,10 @@ public class PlayerController : MonoBehaviour
 
     private void SetInit()
     {
-        // Set Hp
         _hp = _maxHp;
-
-        if (_healthBar != null)
-            _healthBar.SetMaxHealth(_maxHp);
-
-        //Set ShieldPoint
+        UIManager.Instance?.HealthBar.SetInit(_maxHp);
         _shield = _maxShield;
-
-        if (_shieldBar != null)
-            _shieldBar.SetInit(_maxShield);
+        UIManager.Instance?.ShieldBar.SetInit(_maxShield);
     }
 
     #endregion
