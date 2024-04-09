@@ -8,7 +8,7 @@ public class HealthBarUI : MonoBehaviour
     [SerializeField]
     private Slider _healthBar;
 
-    public void SetMaxHealth(int maxHealth)
+    public void SetInit(int maxHealth)
     {
         this.maxHealth = maxHealth;
         _healthBar.maxValue = maxHealth;

@@ -44,7 +44,10 @@ public class PlayerShooting : PlayerCombat
     public void SetGun(NewWeapon weapon)
     {
         gun = (NewGun)weapon;
-        gun.OnAmmoChanged += _ammoDisplay.SetAmmo;
+
+        if(UIManager.Instance != null)
+            gun.OnAmmoChanged += UIManager.Instance.Magazine.SetAmmo;
+
         gun.UpdateAmmoDisplay();
     }
 
