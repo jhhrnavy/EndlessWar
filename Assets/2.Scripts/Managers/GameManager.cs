@@ -1,16 +1,11 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static Cinemachine.DocumentationSortingAttribute;
 
 public class GameManager : Singleton<GameManager>
 {
     public string thisScene;
     private string _mainMenu = "Main Menu";
-
-    private void Awake()
-    {
-        thisScene = SceneManager.GetActiveScene().name;
-    }
 
     private void OnEnable()
     {
@@ -24,8 +19,10 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        thisScene = SceneManager.GetActiveScene().name;
+
         Time.timeScale = 1f;
-        UIManager.Instance.Stopwatch.StartStopwatch();
+        UIManager.Instance?.Stopwatch.StartStopwatch();
     }
 
     public void PauseOrContinue()

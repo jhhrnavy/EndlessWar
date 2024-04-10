@@ -8,7 +8,9 @@ public class Stopwatch : MonoBehaviour
 
     private bool _isRunning = false;
     private float _elapsedTime; // 경과 시간
+
     public string TimerText { get => _timerText.text; set => _timerText.text = value; }
+    public float ClearTime { get => _elapsedTime; }
 
     private void Update()
     {
@@ -46,5 +48,10 @@ public class Stopwatch : MonoBehaviour
         int milliseconds = (int)(fraction * 100);
 
         TimerText = string.Format("{0:00}:{1:00}:{2:00}:{3:00}", hours, minutes, seconds, milliseconds);
+    }
+
+    private float GetElapsedTime()
+    {
+        return _elapsedTime;
     }
 }

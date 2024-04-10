@@ -10,7 +10,6 @@ public class NewGun : NewWeapon, IFireable
 
     [Space, Header("Gun")]
     public GameObject muzzleFlashParticles;
-    public AudioSource audioSource;
     public AudioClip fireClip;
 
     public int currentAmmo;
@@ -57,8 +56,12 @@ public class NewGun : NewWeapon, IFireable
         var bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(direction.normalized));
         bullet.GetComponent<Rigidbody>().AddForce(direction.normalized * bulletSpeed, ForceMode.Impulse);
 
+        // VFS
         var muzzle = Instantiate(muzzleFlashParticles, firePoint.position, Quaternion.identity);
         Destroy(muzzle, 0.1f);
+
+        // SFX
+        FireSoundEfx();
 
         currentAmmo--;
         UpdateAmmoDisplay();
@@ -66,8 +69,7 @@ public class NewGun : NewWeapon, IFireable
 
     public void FireSoundEfx()
     {
-        if (audioSource != null)
-            audioSource.PlayOneShot(fireClip);
+        AudioManager.Instance?.PlaySFX(fireClip);
     }
 
     public void Reload()
@@ -134,7 +136,6 @@ public class NewGun : NewWeapon, IFireable
         while (_readyToFire && isFiring && currentAmmo > 0)
         {
             _readyToFire = false;
-            FireSoundEfx();
             // น฿ป็
             Fire(_targetPosition);
 
