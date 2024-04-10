@@ -2,14 +2,20 @@ using UnityEngine;
 
 public class BombShooter : PlayerCombat
 {
+    [SerializeField] private Animator animator;
     [SerializeField] private GameObject _bombPrefabs;
     [SerializeField] private Transform _startPoint;
     [SerializeField] private float _throwForwardForce = 5f;
     [SerializeField] private float _throwUpwardForce = 5f;
 
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
     public override void Attack()
     {
-        ThrowBomb();
+        //ThrowBomb();
+        animator.SetTrigger("Throw");
     }
 
     public void ThrowBomb()

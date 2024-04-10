@@ -53,10 +53,22 @@ public class WeaponIKController : MonoBehaviour
         _trsfLHandMount = trsfLHandMount;
 
         // 상체 모션 변경
-        if(newWeapon.GetComponent<NewWeapon>() is NewSword)
+        if (newWeapon.GetComponent<NewWeapon>() is NewSword)
+        {
             _anim.SetLayerWeight(1, 1f);
-        else
+            _anim.SetLayerWeight(2, 0f);
+
+        }
+        else if (newWeapon.GetComponent<NewWeapon>() is Bomb)
+        {
+            _anim.SetLayerWeight(2, 1f);
             _anim.SetLayerWeight(1, 0f);
+        }
+        else
+        {
+            _anim.SetLayerWeight(1, 0f);
+            _anim.SetLayerWeight(2, 0f);
+        }
     }
 
     public void SetInit()
