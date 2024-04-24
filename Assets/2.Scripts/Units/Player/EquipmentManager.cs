@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,16 +11,15 @@ public class EquipmentManager : MonoBehaviour
 
     [SerializeField] private Transform _weaponHolder;
     [SerializeField] private GameObject[] _equipments = new GameObject[4];
+    [SerializeField] private NewWeapon _equipedWeapon;
 
-
-    public NewWeapon equipedWeapon;
-    public AttackType curAttackType; 
     private Rigidbody _curWeaponRb;
     private Collider _curWeaponCollider;
     private float dropForwardForce = 3f;
     private float dropUpwardForce = 3f;
 
-    public Transform WeaponHolder { get => _weaponHolder;}
+    public NewWeapon EquipedWeapon { get => _equipedWeapon; }
+    public int AttackType { get; private set; }
 
     private void Start()
     {
@@ -28,85 +28,57 @@ public class EquipmentManager : MonoBehaviour
         _playerShooting = GetComponent<PlayerShooting>();
         _playerMeleeAttack = GetComponent<PlayerMeleeAttack>();
 
-        //// 인벤토리에 이미 있는 아이템 인스턴스
-        //for (int i = 0; i < _equipments.Length; i++)
-        //{
-        //    NewWeapon weapon = _inventory.GetItem(i);
-        //    if (weapon != null)
-        //    {
-        //        var obj = Instantiate(weapon.prefab, _weaponHolder);
-        //        obj.transform.localPosition = weapon.localPosition;
-        //        obj.transform.localRotation = Quaternion.Euler(weapon.localRotation);
-        //        obj.transform.localScale = weapon.localScale;
-
-        //        _equipments[i] = obj;
-
-        //        obj.SetActive(false);
-        //    }
-        //}
+        // Set Init Weapon , melee
+        SwitchWeapon((int)WeaponStyle.Melee);
     }
+
+    #region Input Event Function
 
     public void OnSwitchWeapons(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             int index = (int)context.ReadValue<float>() - 1;
-            if (_equipments[index] != null)
-            {
-                EquipWeapon(index);
-                // 공격 모드 전환
-                ChangeAttackMode((WeaponStyle)index);
-            }
-            
-            if(index == 3)
-            {
-                EquipWeapon(index);
-                ChangeAttackMode((WeaponStyle)index);
-            }
+            SwitchWeapon(index);
         }
     }
 
     public void OnDropWeapon(InputAction.CallbackContext context)
     {
         if (!context.performed || 
-            equipedWeapon == null ||
-            equipedWeapon.weaponStyle == WeaponStyle.Melee ||
-            equipedWeapon.weaponStyle == WeaponStyle.Throwing) return;
+            _equipedWeapon == null ||
+            _equipedWeapon.weaponStyle == WeaponStyle.Melee ||
+            _equipedWeapon.weaponStyle == WeaponStyle.Throwing) return;
 
+        int dropWeaponIndex = (int)_equipedWeapon.weaponStyle;
         Debug.Log("호출");
         Drop();
 
         // 인벤토리에서 무기 제거
-        _inventory.RemoveItem((int)equipedWeapon.weaponStyle);
+        _inventory.RemoveItem(dropWeaponIndex);
 
         // Unequipped
         UpdateEquipmentInfo(null, null, null);
-        ChangeAttackMode(WeaponStyle.None);
 
         // 애니메이션 IK 변경
         _weaponIKController.SetInit();
+
+        SwitchWeapon(dropWeaponIndex + 1);
     }
-    private void Drop()
-    {
-        // Physics Drop weapon
-        equipedWeapon.transform.SetParent(null);
-        _curWeaponRb.isKinematic = false;
-        _curWeaponCollider.isTrigger = false;
-        _curWeaponRb.velocity = GetComponent<Rigidbody>().velocity;
-        _curWeaponRb.AddForce(transform.forward * dropForwardForce, ForceMode.Impulse);
-        _curWeaponRb.AddForce(transform.up * dropUpwardForce, ForceMode.Impulse);
-        equipedWeapon.gameObject.layer = 10;
-    }
+
+    #endregion
+
+    #region public Method
 
     public void EquipWeapon(int weaponStyle)
     {
-        if (equipedWeapon != null) 
-            equipedWeapon.gameObject.SetActive(false);
+        if (_equipedWeapon != null)
+            _equipedWeapon.gameObject.SetActive(false);
 
-        if(_equipments[weaponStyle] != null)
+        if (_equipments[weaponStyle] != null)
         {
             _equipments[weaponStyle].SetActive(true);
-            equipedWeapon = _equipments[weaponStyle].GetComponent<NewWeapon>();
+            _equipedWeapon = _equipments[weaponStyle].GetComponent<NewWeapon>();
             UpdateEquipmentInfo(_equipments[weaponStyle], _equipments[weaponStyle].GetComponent<Rigidbody>(), _equipments[weaponStyle].GetComponent<Collider>());
         }
 
@@ -116,7 +88,9 @@ public class EquipmentManager : MonoBehaviour
             _curWeaponCollider.isTrigger = true;
 
         // 애니메이션 IK 변경
-        _weaponIKController.ChangeWeaponIK(equipedWeapon.transform, equipedWeapon.trsfRHandMount, equipedWeapon.trsfLHandMount);
+        _weaponIKController.ChangeWeaponIK(_equipedWeapon.transform, _equipedWeapon.trsfRHandMount, _equipedWeapon.trsfLHandMount);
+
+        ChangeAttackMode();
     }
 
     public void AddEquipment(GameObject equipment)
@@ -130,40 +104,66 @@ public class EquipmentManager : MonoBehaviour
         _equipments[(int)weaponInfo.weaponStyle] = equipment;
     }
 
+    #endregion
+
+    #region Private Method
+
+    private void Drop()
+    {
+        // Physics Drop weapon
+        _equipedWeapon.transform.SetParent(null);
+        _curWeaponRb.isKinematic = false;
+        _curWeaponCollider.isTrigger = false;
+
+        // Throwing force
+        _curWeaponRb.velocity = GetComponent<Rigidbody>().velocity;
+        _curWeaponRb.AddForce(transform.forward * dropForwardForce, ForceMode.Impulse);
+        _curWeaponRb.AddForce(transform.up * dropUpwardForce, ForceMode.Impulse);
+
+        _equipedWeapon.gameObject.layer = 10;
+        _equipments[(int)_equipedWeapon.weaponStyle] = null;
+    }
+
     private void UpdateEquipmentInfo(GameObject weapon, Rigidbody rb, Collider coll)
     {
         if(weapon != null)
-            equipedWeapon = weapon.GetComponent<NewWeapon>();
+            _equipedWeapon = weapon.GetComponent<NewWeapon>();
         else
-            equipedWeapon = null;
+            _equipedWeapon = null;
 
         _curWeaponRb = rb;
         _curWeaponCollider = coll;
     }
 
-    private void ChangeAttackMode(WeaponStyle weaponStyle)
+    private void ChangeAttackMode()
     {
-        switch (weaponStyle)
+        switch (_equipedWeapon.weaponStyle)
         {
             case WeaponStyle.None:
-                curAttackType = AttackType.None;
                 break;
 
             case WeaponStyle.Primary:
             case WeaponStyle.Secondary:
-                curAttackType = AttackType.Shooting;
-                _playerShooting.SetGun(equipedWeapon);
+                _playerShooting.SetGun(_equipedWeapon);
+                AttackType = 0;
                 break;
 
             case WeaponStyle.Melee:
-                curAttackType = AttackType.Melee;
-                _playerMeleeAttack.weapon = equipedWeapon as NewSword;
+                _playerMeleeAttack.weapon = _equipedWeapon as NewSword;
+                AttackType = 1;
                 break;
 
             case WeaponStyle.Throwing:
-                curAttackType = AttackType.Throwing;
+                AttackType = 2;
                 break;
         }
     }
 
+    private void SwitchWeapon(int weaponStyle)
+    {
+        if (_equipments[weaponStyle] != null)
+            EquipWeapon(weaponStyle);
+    }
+
+    #endregion
 }

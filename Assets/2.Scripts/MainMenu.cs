@@ -30,6 +30,15 @@ public class MainMenu : MonoBehaviour
         SetRewardText();
     }
 
+    public void OnClickBtnQuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
     public void SetClearTimeText(float time)
     {
         int hours = (int)(time / 3600) % 24;

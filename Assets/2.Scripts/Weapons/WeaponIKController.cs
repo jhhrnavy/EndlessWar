@@ -3,10 +3,13 @@ using UnityEngine;
 public class WeaponIKController : MonoBehaviour
 {
     private Animator _anim;
-    public Transform _trsfWeaponPivot;
-    public Transform _trsfRHandMount;
-    public Transform _trsfLHandMount;
+    [SerializeField] private Transform _trsfWeaponPivot;
+    [SerializeField] private Transform _trsfRHandMount;
+    [SerializeField] private Transform _trsfLHandMount;
     public Transform currentWeapon;
+
+    private float _rightHandIkWeightValue = 0f;
+    private float _leftHandIkWeightValue = 0f;
 
     private void Awake()
     {
@@ -18,31 +21,23 @@ public class WeaponIKController : MonoBehaviour
     }
     private void OnAnimatorIK(int layerIndex)
     {
-        if(_anim != null)
+        if (_anim == null || currentWeapon == null) return;
+
+        _trsfWeaponPivot.position = _anim.GetIKHintPosition(AvatarIKHint.RightElbow);
+
+        // Righthand IK setting
+        _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, _rightHandIkWeightValue);
+        _anim.SetIKRotationWeight(AvatarIKGoal.RightHand, _rightHandIkWeightValue);
+        _anim.SetIKPosition(AvatarIKGoal.RightHand, _trsfRHandMount.position);
+        _anim.SetIKRotation(AvatarIKGoal.RightHand, _trsfRHandMount.rotation);
+
+        // Lefthand IK setting
+        _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, _leftHandIkWeightValue);
+        _anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, _leftHandIkWeightValue);
+        if (_trsfLHandMount != null)
         {
-            _trsfWeaponPivot.position = _anim.GetIKHintPosition(AvatarIKHint.RightElbow);
-
-            if (currentWeapon)
-            {
-
-                _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
-                _anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-                _anim.SetIKPosition(AvatarIKGoal.RightHand, _trsfRHandMount.position);
-                _anim.SetIKRotation(AvatarIKGoal.RightHand, _trsfRHandMount.rotation);
-
-                if(_trsfLHandMount != null)
-                {
-                    _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
-                    _anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
-                    _anim.SetIKPosition(AvatarIKGoal.LeftHand, _trsfLHandMount.position);
-                    _anim.SetIKRotation(AvatarIKGoal.LeftHand, _trsfLHandMount.rotation);
-                }
-                else
-                {
-                    _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0f);
-                    _anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0f);
-                }
-            }
+            _anim.SetIKPosition(AvatarIKGoal.LeftHand, _trsfLHandMount.position);
+            _anim.SetIKRotation(AvatarIKGoal.LeftHand, _trsfLHandMount.rotation);
         }
     }
 
@@ -51,6 +46,12 @@ public class WeaponIKController : MonoBehaviour
         currentWeapon = newWeapon;
         _trsfRHandMount = trsfRHandMount;
         _trsfLHandMount = trsfLHandMount;
+
+        _rightHandIkWeightValue = 1f;
+        if (_trsfLHandMount != null)
+            _leftHandIkWeightValue = 1f;
+        else
+            _leftHandIkWeightValue = 0f;
 
         // 상체 모션 변경
         if (newWeapon.GetComponent<NewWeapon>() is NewSword)

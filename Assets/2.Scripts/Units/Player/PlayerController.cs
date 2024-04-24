@@ -85,15 +85,15 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (_equipmentManager.equipedWeapon == null) return;
+        if (_equipmentManager.EquipedWeapon == null) return;
 
         if (context.started)
         {
-            _combat[(int)_equipmentManager.curAttackType].Attack();
+            _combat[_equipmentManager.AttackType].Attack();
         }
         else if (context.canceled)
         {
-            _combat[(int)_equipmentManager.curAttackType].CancledAttack();
+            _combat[_equipmentManager.AttackType].CancledAttack();
         }
     }
 

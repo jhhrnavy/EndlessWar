@@ -14,18 +14,20 @@ public class BombShooter : PlayerCombat
     }
     public override void Attack()
     {
-        //ThrowBomb();
         animator.SetTrigger("Throw");
     }
 
+    // Animation event function
     public void ThrowBomb()
     {
-
         GameObject bomb = Instantiate(_bombPrefabs, _startPoint.position + transform.forward * 1f, Quaternion.identity);
 
+        // Throwing Force
         Vector3 force = transform.forward * _throwForwardForce + transform.up * _throwUpwardForce;
 
+        // Current character's movement velocity
         Vector3 velocity = transform.GetComponent<Rigidbody>().velocity;
+
         bomb.GetComponent<Rigidbody>().AddForce(force + velocity, ForceMode.Impulse);
         bomb.GetComponent<Bomb>().Explode();
     }
